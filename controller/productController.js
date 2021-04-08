@@ -7,11 +7,13 @@ var multer = require("multer");
 
 //var ProductCatalog = mongoose.model("Category", Category);
 const addProduct = async (req, res, next) => {
+  console.log(req.body);
   const product = await new Product({
     name: req.body.name,
     stock: req.body.stock,
     price: req.body.price,
     Category: req.body.category,
+    description: req.body.description,
     image: req.file.path,
   });
   product.save().then(product => {
@@ -40,11 +42,14 @@ const getProductById = (req, res, next) => {
   });
 };
 const updateProduct = (req, res, next) => {
-  Product.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
-    if (err) return next(err);
-    res.json(post);
-  });
+  console.log(req.body);
+  Product.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then(Product => {
+      res.json(Product);
+    })
+    .catch(error => res.json(error));
 };
+
 const getAllProduct = (req, res, next) => {
   Product.find()
     .then(products => {
@@ -54,12 +59,20 @@ const getAllProduct = (req, res, next) => {
       res.json(err);
     });
 };
-const getProductByCategory = (req, res, next) => {
-  //mazelt
+var deleteProduct = (req, res, next) => {
+  Product.findByIdAndRemove(req.params.id, function (err, post) {
+    if (err) return next(err);
+    res.json(post);
+  });
 };
+
+// const getProductByCategory = (req, res, next) => {
+//   //mazelt
+// };
 module.exports = {
   addProduct,
   getProductById,
   updateProduct,
   getAllProduct,
+  deleteProduct,
 };

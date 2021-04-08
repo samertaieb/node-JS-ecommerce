@@ -32,6 +32,12 @@ router.post(
 );
 router.get("/products", productController.getAllProduct);
 router.get("/Product/:id", productController.getProductById);
+router.put(
+  "/updateproduct/:id",
+  upload.single("image"),
+  productController.updateProduct
+);
+router.delete("/deleteproduct/:id", productController.deleteProduct);
 //router.get("/Product/:category", productController.getProductByCategory); //mazelt
 
 module.exports = router;

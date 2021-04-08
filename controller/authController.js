@@ -53,6 +53,7 @@ const login = (req, res, next) => {
           res.json({
             message: "login sucessful",
             token,
+            user,
           });
         } else {
           res.json({
